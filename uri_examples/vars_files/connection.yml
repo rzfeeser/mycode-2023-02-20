@@ -1,0 +1,2 @@
+unispherehost: 192.168.1.xxx    # ip or fqdn of powermax
+serial_no: 24601                # serial number of powermax

@@ -1,0 +1,25 @@
+---
+- name: Example using the uri module with ansible
+  hosts: localhost
+  connection: local  # use this when you don't want ssh
+  gather_facts: false
+
+  tasks:
+    - name: Make an HTTP GET request
+      ansible.builtin.uri:
+        method: GET
+        url: http://api.open-notify.org/astros.json
+      register: results   # save what comes back as a variable named "resutls"
+
+    - name: Assert that the HTTP service is running
+      ansible.builtin.assert:
+        that:
+          - results.status == 200
+        success_msg: "(Astro) HTTP service is UP :)"
+        fail_msg: "(Astro) HTTP service is DOWN :("
+
+
+        #- name: show the contents of the variable
+        #ansible.builtin.debug:
+        #var: results
+        #msg: "The variable we are looking at is {{ results }}"
