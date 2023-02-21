@@ -1,0 +1,2 @@
+[futurama]
+planet_mars ansible_host=10.10.2.4 ansible_user=fry

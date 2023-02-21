@@ -1,0 +1,11 @@
+---
+- name: Talking to single host    # (optional) metadata
+  hosts: futurama                 # (required) group now
+  connection: ssh                 # ssh.py (connecting to linux hosts), winrm.py (connect to windows hosts), local.py (gen used when connected to storage platform)
+  
+  tasks:
+    
+    - name: create a file on target host
+      ansible.builtin.file:
+        state: touch
+        name: we_made_this.txt

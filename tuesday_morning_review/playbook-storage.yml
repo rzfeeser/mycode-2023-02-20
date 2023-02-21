@@ -1,0 +1,22 @@
+---
+# see https://galaxy.ansible.com/dellemc/powermax
+
+# before you run this playbook, run this command to pickup powermax modules:
+# ansible-galaxy collection install dellemc.powermax
+
+# also, before you run this playbook, install the SDK (client library from Dell)
+# python -m pip install PyU4V
+- name: Talking to powermax    # (optional) metadata
+  hosts: localhost             # if we are only talking to a single powermax, localhost is fine
+  connection: local       # allows us to work through SDK (PyU4V)
+  gather_facts: false     # turn off gather_facts, or we'll just learn about ourselves
+
+  tasks:
+
+  - name: Get the list of arrays for a given Unisphere host
+    dellemc.powermax.info:
+      unispherehost: "{{unispherehost}}"
+      universion: "{{universion}}"
+      verifycert: "{{verifycert}}"
+      user: "{{user}}"
+      password: "{{password}}" 
