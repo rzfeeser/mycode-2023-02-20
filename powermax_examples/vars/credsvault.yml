@@ -1,0 +1,6 @@
+dell:
+  unispherehost: 10.0.82.11   # ip or FQDN of host
+  universion: "91"            # (this needs to be a string! quote it!) - version of unipshere goes here
+  vc: false                   # verify cert true / false (use true in production)
+  user: rzfeeser
+  pass: qwerty123!
