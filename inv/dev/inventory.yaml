@@ -1,0 +1,58 @@
+all:
+  children:
+    eosswitches:
+      hosts:
+        sw-1: {}
+        sw-2: {}
+    planetexpress:
+      hosts:
+        bender:
+          ansible_host: 10.10.2.3
+          ansible_python_interpreter: /usr/bin/python3
+          ansible_user: bender
+          fileuser: bender
+        farnsworth:
+          ansible_host: 10.10.2.6
+          ansible_ssh_pass: alta3
+          ansible_user: farnsworth
+          fileuser: farnsworth
+        fry:
+          ansible_host: 10.10.2.4
+          ansible_python_interpreter: /usr/bin/python3
+          ansible_user: fry
+          fileuser: fry
+        zoidberg:
+          ansible_host: 10.10.2.5
+          ansible_python_interpreter: /usr/bin/python3
+          ansible_user: zoidberg
+          fileuser: zoidberg
+    professors:
+      hosts:
+        farnsworth: {}
+    raiders:
+      hosts:
+        indy:
+          ansible_host: 10.10.2.2
+          ansible_ssh_pass: alta3
+          ansible_user: indy
+    research:
+      hosts:
+        h1:
+          ansible_host: 10.10.2.5
+          ansible_python_interpreter: /usr/bin/python3
+          ansible_user: zoidberg
+        h2:
+          ansible_host: 10.10.2.4
+          ansible_python_interpreter: /usr/bin/python3
+          ansible_user: fry
+    switches:
+      hosts:
+        sw-1:
+          ansible_network_os: eos
+        sw-2:
+          ansible_network_os: eos
+    ungrouped: {}
+    web:
+      hosts:
+        bender: {}
+        fry: {}

@@ -1,0 +1,23 @@
+---
+- name: Example playbook
+  hosts: localhost
+  connection: local
+
+  collections:
+    - dellemc.powerscale
+
+  tasks:
+  - name: Get attributes of the PowerScale cluster
+    dellemc.powerscale.info:
+        onefs_host: "{{onefs_host}}"
+        port_no: "{{powerscaleport}}"
+        verify_ssl: "{{verify_ssl}}"
+        api_user: "{{api_user}}"
+        api_password: "{{api_password}}"
+        gather_subset:
+          - attributes
+    register: results
+
+  - name: display the var collection
+    debug:
+      var: results

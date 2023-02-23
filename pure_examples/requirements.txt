@@ -1,0 +1,13 @@
+# this file was taken from the root of the collection
+# it is the python dependencies we need to run the solution
+# run ansible --version
+# note the version of python you are using-- at the end of this line is a command like /usr/bin/python or /usr/bin/python3
+# take that command to complete the following (replace ... with python or python3, etc.)
+# /usr/bin/... -m pip install -r requirements.txt
+
+purestorage
+py-pure-client
+netaddr
+requests
+pycountry
+packaging

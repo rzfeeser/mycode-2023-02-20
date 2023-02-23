@@ -1,0 +1,19 @@
+---
+- name: My first pure flasharray playbook
+  hosts: localhost
+  connection: local
+
+  vars:
+      fa_url: 10.10.10.2                # set to flash array IP
+      api_token: abc-def-ghi-jkl-123    # set your own token
+
+  tasks:
+  - name: Collect all information
+    purestorage.flasharray.purefa_info:
+        gather_subset:
+            - all
+        fa_url: "{{ fa_url }}"
+        api_token: "{{ api_token }}"    # e31060a7-21fc-e277-6240-25983c6c4592
+  - name: Show all information
+    ansible.builtin.debug:
+        msg: "{{ array_info['purefa_info'] }}"
