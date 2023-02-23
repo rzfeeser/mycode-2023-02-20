@@ -1,0 +1,87 @@
+---
+# tasks file for zautomate-powermax
+# if on version =< 1.6.1 this would be dellemc_powermax_gatherfacts
+# if on version > 1.6.1 this would be 'info'
+- name: get a list of arrays (serial no.)
+  dellemc.powermax.info:
+    unispherehost: "{{ dell.unispherehost }}"   # look to vars/credsvault.yml
+    universion: "{{ dell.universion }}"         # look to vars/credsvault.yml
+    verifycert: "{{ dell.vc }}"                 # look to vars/credsvault.yml
+    user: "{{ dell.user }}"                     # look to vars/credsvault.yml
+    password: "{{ dell.pass }}"                 # look to vars/credsvault.yml
+  results: arrays                               # list of our arrays
+
+# this task will only run IF we include a -v flag
+# ansible-playbook -v   = verbosity: 1
+# ansible-playbook -vv  = verbosity: 2
+- name: Display the list of arrays we just gathered
+  debug:
+    var: arrays               # the list returned will be the arrays enrolled in the powermax
+    verbosity: 1              # the array IDs are also the "serial no." asked for in almost all
+                              # powermax modules
+
+- name: Create a storage group
+  dellemc.powermax.storagegroup:                    # older version -> dellemc_powermax_storagegroup:
+    unispherehost: "{{ dell.unispherehost }}"   # look to vars/credsvault.yml
+    universion: "{{ dell.universion }}"         # look to vars/credsvault.yml
+    verifycert: "{{ dell.vc }}"                 # look to vars/credsvault.yml
+    user: "{{ dell.user }}"                     # look to vars/credsvault.yml
+    password: "{{ dell.pass }}"                 # look to vars/credsvault.yml
+    serial_no: "{{ arrays.Arrays[0] }}"         # this comes from the task dellemc.powermax.info (our first task)
+    service_level: "bronze"
+    state: "present"
+    sg_name: "{{ storage.sg_name }}"   #-mks-{{ storage.othername }}"            # look to vars/storagedetails.yml
+
+- name: Create a volume for the storage group
+  dellemc.powermax.storagegroup:
+    unispherehost: "{{ dell.unispherehost }}"   # look to vars/credsvault.yml
+    universion: "{{ dell.universion }}"         # look to vars/credsvault.yml
+    verifycert: "{{ dell.vc }}"                 # look to vars/credsvault.yml
+    user: "{{ dell.user }}"                     # look to vars/credsvault.yml
+    password: "{{ dell.pass }}"                 # look to vars/credsvault.yml
+    serial_no: "{{ arrays.Arrays[0] }}"         # this comes from the task dellemc.powermax.info (our first task)
+    service_level: "bronze"
+    state: "present"
+    sg_name: "{{ storage.sg_name }}"            # str  - look to vars/storagedetails.yml
+    volumes: "{{ storage.vols }}"               # list - look to vars/storagedetails.yml
+    vol_state: "present-in-group"
+
+- name: "Create host {{ storage.host_name }}"
+  dellemc.powermax.host:
+    unispherehost: "{{ dell.unispherehost }}"   # look to vars/credsvault.yml
+    universion: "{{ dell.universion }}"         # look to vars/credsvault.yml
+    verifycert: "{{ dell.vc }}"                 # look to vars/credsvault.yml
+    user: "{{ dell.user }}"                     # look to vars/credsvault.yml
+    password: "{{ dell.pass }}"                 # look to vars/credsvault.yml
+    serial_no: "{{ arrays.Arrays[0] }}"         # this comes from the task dellemc.powermax.info (our first task)
+    host_name: "{{ storage.host_name }}"
+    initiators: "{{ storage.initators }}"
+    state: present
+    initiator_state: "present-in-host"
+
+- name: "Create port group {{ storage.portgroup_name }}"
+  dellemc.powermax.portgroup:
+    unispherehost: "{{ dell.unispherehost }}"   # look to vars/credsvault.yml
+    universion: "{{ dell.universion }}"         # look to vars/credsvault.yml
+    verifycert: "{{ dell.vc }}"                 # look to vars/credsvault.yml
+    user: "{{ dell.user }}"                     # look to vars/credsvault.yml
+    password: "{{ dell.pass }}"                 # look to vars/credsvault.yml
+    serial_no: "{{ arrays.Arrays[0] }}"         # this comes from the task dellemc.powermax.info (our first task)
+    portgroup_name: "{{ storage.portgroup_name }}"
+    state: present
+    ports: "{{ storage.port_list }}"
+    port_state: "present-in-group"
+
+- name: Create MV with hostgroup
+ dellemc.powermax.maskingview:
+   unispherehost: "{{ dell.unispherehost }}"
+   universion: "{{ dell.universion }}"
+   verifycert: "{{ dell.vc }}"
+   user: "{{ dell.user }}"
+   password: "{{ dell.pass }}"
+   serial_no: "{{ arrays.Arrays[0] }}"
+   mv_name: "{{ storage.mv_name }}"                # look to vars/storagedetails.yml
+   portgroup_name: "{{ storage.portgroup_name }}"  # look to vars/storagedetails.yml
+   host_name: "{{ storage.host_name }}"            # look to vars/storagedetails.yml
+   sg_name: "{{ storage.sg_name }}"                # look to vars/storagedetails.yml
+   state: "present"

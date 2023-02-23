@@ -1,0 +1,18 @@
+---
+- name: D PMax - example workflow - with a role
+  hosts: localhost
+  connection: local
+
+    #collections:
+    #- dellemc.powermax
+
+  vars_files:
+    - vars/credsvault.yml        # <- creds / passwords / tokens / ips
+    - vars/storagedetails.yml    # <- details about the ticket go here
+
+
+  tasks:
+    
+    - name: Create Operation
+      include_role:
+        name: zautomate_powermax   # looks for the roles directory (locally, or according to ansible.cfg)
