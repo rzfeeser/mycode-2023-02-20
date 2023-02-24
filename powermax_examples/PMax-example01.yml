@@ -16,7 +16,7 @@
         verifycert: false             # before you get into production make this true
         user: zachfeez                # never ever hardcode creds into your solutions!
         password: qwerty123!          # use an external vault or ansible-vault to encyrpt vars
-      results: results                # that are NOT commited to git / github!!!
+      register: results                # that are NOT commited to git / github!!!
                                       # OR pass as -e extravars at runtime
 
     - name: show what we retreived

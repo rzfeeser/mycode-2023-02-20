@@ -21,7 +21,7 @@
         verifycert: "{{ dell.vc }}"                 # look to vars/credsvault.yml
         user: "{{ dell.user }}"                     # look to vars/credsvault.yml
         password: "{{ dell.pass }}"                 # look to vars/credsvault.yml
-      results: arrays                               # list of our arrays
+      register: arrays                               # list of our arrays
 
     # this task will only run IF we include a -v flag
     # ansible-playbook -v   = verbosity: 1
